@@ -1,0 +1,41 @@
+{
+  "name": "sparouter",
+  "version": "1.0.0",
+  "description": "A light weight SPA router basically for frontend routing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "watch": "gulp dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sirvic-tech/sparouter.git"
+  },
+  "keywords": [
+    "front-end",
+    "router",
+    "client",
+    "routing",
+    "javascript",
+    "routing"
+  ],
+  "author": "sirvic-tech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sirvic-tech/sparouter/issues"
+  },
+  "homepage": "https://github.com/sirvic-tech/sparouter#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "run-sequence": "^2.2.1"
+  }
+}
