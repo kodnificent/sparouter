@@ -1,105 +1,307 @@
-class Router {
-    constructor(){
+import {
+    variableChecker, ArgumentNotFoundError as ArgNotFound, ArgumentTypeError as ArgTypeError
+} from "./helpers";
+
+/**
+ * @class SPARouter
+ */
+class SPARouter {
+
+     /**
+     * Instantiates the SPARouter Class.
+     * @param {Object} options
+     * @param {boolean} [options.caseInsensitive=true] - if set to false, uri matching will be case sensitive.
+     * @param {boolean} [options.historyMode=false] - Set to true if your application uses HTML History Mode Api.  
+     * If set to historyMode, SPARouter will handle popstate events by initializing the router again to update the page
+     * according to the callback function set with ``SPARouter.get()`` method.
+     * @example
+     * router = new SPARouter({
+     * historyMode: true,
+     * caseInsensitive: false
+     * });
+     */
+    constructor(options){
         this.routes = [];
-        this.requestPath = window.location.pathname;
+        this.path =  this._requestPath();
+        this._var = variableChecker;
+
+        //default options
+        let defOptions = {
+            caseInsensitive: true,
+            historyMode: false
+        };
+        let mergedOptions = {...defOptions, ...options};
+        for(let key in mergedOptions){
+            this[`_${key}`] = mergedOptions[key];
+        }
+        this._checkHistoryMode();
+
         return this;
     }
 
     /**
-     * Initialize the Router.
-     * Call this method after setting all route paths
+     * The get method is used in assigning routes to your application
+     * @param {string | RegExp} uri route to be matched
+     * @param {callback} callback a callback function to be invoked if the route has been matched.
+     * @param {object} [thisArg=undefined] an argument that represents ``this`` keyword in your callback function. If empty, you will get undefined
+     * if you try to use ``this`` keyword in your callback function.  
+     * You can't pass the SPARouter class as ``this`` argument as it will return undefined also. The SPARouter class is already provided in the callback function
+     * @example
+     * // using a callback function
+     * SPARouter.get("/some-page-name", (req, router)=>{
+     *      console.log(this.argument); // outputs "A stored argument from my callback function" to the console
+     *      console.log(req.url); // outputs "/some-page-name" to the console
+     * }, {argument: "A stored argument from my callback function"}); // this ouputs "a stored argument from my callback function" to the console.
+     * 
+     * // using a class method
+     * class SomeClass {
+     *      constructor(){
+     *          this.argument = "A stored argument from my class";
+     *      }
+     *      pageFunction(req, router){
+     *          console.log(this.argument); // outputs "A stored argument from my class" to the console
+     *          console.log(req.url); // outputs "/some-page-name" to the console
+     *      }
+     * }
+     * myClass = new SomeClass();
+     * SPARouter.get("/some-page-name", myClass.pageFunc, myClass);
      */
-    init(){
-        this._routeMatched = false;
-        this.routes.some(route=>{
-            if(this.requestPath.match(`${route.regEx}$`)){
-                this._routeMatched = true;
-                route.params = this._getParameterValue(route.regEx, route.params);
-                return route.callback(this, route.params, route.pattern);// || route.callback.call(this, route.params, route.pattern);
-            }
-        }, this)
-        if(!this._routeMatched){
-            if(!this._notFoundFunc){
-                return;
-            } else {
-                return this._notFoundFunc();
-            }
+    
+    /**
+     * @callback callback
+     * @param {request} request
+     * @param {router} router
+     */
+
+     /**
+      * @typedef {Object} request
+      * @property {Object} param an object of parameters and their value.
+      * @property {string} uri the current request uri
+      */
+
+     /**
+      * @typedef {Object} router
+      * @property {pathFor} pathFor
+      * @property {goTo} goTo
+      * @property {boolean} historyMode check if history mode is set
+      */
+    
+    /**
+     * Returns the uri path for a named route.  
+     * If the route has parameters, an object of the parameter name as ``key`` and parameter value as ``value`` should be passed as second argument.
+     * @typedef {function} pathFor
+     * @memberof router
+     * @param {string} name The name of the route
+     * @param {Object} [parameter] An object of keys and values containing the parameters of the route and its corresponding value.
+     * @returns {string} uri
+     * @example
+     * var router = new SPARouter(options);
+     * router.get("/blog/{slug}", function(req, router){
+     * console.log(router.pathFor("blog-post", { slug: "hello-world"})) //outputs: /blog/hello-world
+     * }).setName("blog-post");
+     */
+
+    /**
+     * Use this method if you would like to **go to** or **redirect** to a link.  
+     * This method uses window.location.href parsing the url param as the href.  
+     * If the historyMode method is set to true, it utilizes the history.pushState() passing
+     * the params and reinitializing the router.
+     * @typedef {function} goTo
+     * @memberof router
+     * @param {string} url The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
+     * @param {Object} [data={}] an object of data for HTML history.pushState()
+     * @param {string} [title=""] title for HTML history.pushState()
+     */
+    get(uri, callback, thisArg){
+        if(!this._var.isSet(uri)) throw new ArgNotFound("uri")
+        if(!this._var.isSet(callback)) throw new ArgNotFound("callback");
+
+        if(!this._var.isString(uri)) throw new ArgTypeError("uri", "string", uri);
+        if(!this._var.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
+
+        thisArg = thisArg instanceof SPARouter ? undefined : thisArg;
+
+        let route = {
+            uri: null,
+            callback: null,
+            thisArg: thisArg,
+            parameters: null,
+            regExp: null,
+            name: null,
+            current: false
         }
-    }
 
-    get(route, cb, routeName = null){
-        if (typeof cb !== "function") throw new Error(`typeof parameter 2 must be a callback function`);
-        
-        route = route === "" ? "/" : route; //empty route will be seen as home page
-        route = route.toLowerCase();
-        this.routes.forEach(storedRoutes=>{
-            if(storedRoutes.pattern === route) throw new Error(`Cannot have two route patterns. Route pattern ${route} already exists`);
+        if(this._caseInsensitive) {
+            uri = uri.toLowerCase()
+        };
+        uri = uri.startsWith("/") ? uri : `/${uri}`;
+        this.routes.forEach(route=>{
+            if(route.uri === uri) throw new Error(`Conflicting routes. The route uri ${route.uri} already exists`);
         });
 
-        if(routeName) this.routes.forEach((storedRoutes)=>{
-            if(storedRoutes.name === routeName) throw new Error(`Duplicate naming. A route with name ${routeName} already exists`);
-        });
-        
-        let routeUrl = route;
-        let parameters = {};
+        route.uri = uri;
+        route.callback = callback;
+        route.parameters = this._proccessParameters(route.uri);
 
-        if(typeof route === "string"){
-            this._getParameters(route, (params, newRoute)=>{
-                parameters = params;
-                route = newRoute;
-            });
-        }
-        
-        this.routes.push({
-            name: routeName,
-            pattern :   routeUrl,
-            regEx : route,
-            callback : cb,
-            params: parameters
-        });
+        this.routes.push(route);
         return this;
     }
 
-    // @TODO create group function for grouping routes
-    /*groupGet(groupRoute, route, cb, routeName = null){
-        console.log("groupingggg!")
+    /**
+     * Match the uri route where a parameter name matches a regular expression. This method must be chained to the
+     * ``SPARouter.get()`` method.
+     * @param {string} name parameter name to match
+     * @param {string} regExp regular expression pattern but must be in string format, without front slashes that converts
+     * it to a regExp object. E.g "0-9", "[A-Z]". See example below  
+     * Special characters which you wish to escape with the backslash must be double escaped. E.g "\\\w" instead of "\w";
+     * @example
+     * router.get("/{page-name}/{id}",function(req, router){
+     * //do something with this route
+     * 
+     * 
+     * }).where("page-name","user").where("id","[0-9]+");
+     * //this route will match my-site.com/user/10, my-site.com/user/15
+     * // it won't match my-site.com/admin/10, my-site.com/user/login
+     */
+    where(name, regExp){
+        
+        //validate type
+        if(!this._var.isSet(name)) throw new ArgNotFound("name");
+        if(!this._var.isSet(regExp)) throw new ArgNotFound("regExp");
+        if(!this._var.isString(name)) throw new ArgTypeError("name", "string", name);
+        if(!this._var.isString(regExp)) throw new ArgTypeError("regExp", "string", regExp);
+
+        let route = this.routes[this.routes.length - 1]; // the target route
+        
+        //if paramaters exists for this route
+        if (route.parameters.length === 0) throw new Error(`No Parameters Found: Could not set paramater regExpression for [${route.uri}] because the route has no parameters`);
+        
+        regExp = regExp.replace(/\(/g,"\\(");
+        regExp = regExp.replace(/\)/g,"\\)");
+
+        regExp = `(${regExp}+)`;
+
+        let parameterFound = false;
+        route.parameters.forEach((parameter, index)=>{
+            if(parameter[name] !== undefined){
+                parameterFound = true;
+                parameter[name].regExp = regExp;
+            }
+        });
+ 
+        if(!parameterFound) throw new Error(`Invalid Parameter: Could not set paramater regExpression for [${route.uri}] because the parameter [${name}] does not exist`);
+
+        return this;
     }
 
-    group(route, cb, groupName = null){
-        this.group.get = this._groupGet;
-        cb(this.group);
-        /*if (typeof cb !== "function") throw new Error(`typeof parameter 2 must be a callback function`);
-        
-        route = route === "" ? "/" : route;
-        route = route.toLowerCase();
+    /**
+     * SPARouter supports named routes. This methods sets the name of a route and can be referrenced using the
+     * `router.pathFor(name)` inside your callback function in `SPARouter.get()` method.  
+     * This method must be chained to the `SPARouter.get()` method.
+     * @param {string} name route name
+     * @example
+     * router = new SPARouter(options)
+     * router.get("/user/login", function(req, router){
+     * // some functions here
+     * 
+     * 
+     * }).setName("user-login");
+     * 
+     * router.get("/user/home", function(req, router){
+     * console.log(router.pathFor("user-home")) // outputs: /user/home
+     * console.log(router.pathFor("user-login")) // outputs: /user/login
+     * 
+     * }).setName("user-home")
+     */
+    setName(name){
+        if(!this._var.isSet(name)) throw new ArgNotFound("name");
+        if(!this._var.isString(name)) throw new ArgTypeError("name", "string", name);
 
-        if(groupName) this.routes.forEach((storedRoutes)=>{
-            if(storedRoutes.name === groupName) throw new Error(`Duplicate naming. A route with name ${routeName} already exists`);
-        });
-        
-        let routeUrl = route;
-        let parameters = {};
+        let targetRoute = this.routes[this.routes.length - 1];
+        this.routes.forEach((route)=>{
+            if(route.name === name) throw new Error(`Duplicate naming. A route with name ${name} already exists`);
+        })
+        targetRoute.name = name;
+        return this;
+    }
 
-        if(typeof route === "string"){
-            this._getParameters(route, (params, newRoute)=>{
-                parameters = params;
-                route = newRoute;
-            });
+    /**
+     * Initialize the Router.  
+     * Call this method after setting up all route paths.
+     * @example
+     * const router = new SPARouter(myOptions);
+     * router.get("/", homeCallback);
+     * router.get("/about", aboutCallback).setName("about");
+     * router.get("/contact", contactCallback).setName("contact");
+     * router.notFoundHandler(myNotFoundHandler);
+     * router.init();
+     */
+    init(){
+        this.routes.forEach((route)=>{
+            this._proccessRegExp(route);
+        }, this);
+
+        let found = false;
+        let routerObj = {
+            pathFor: (name, parameter)=>{
+                return this.pathFor(name, parameter);
+            },
+
+            goTo: (url, data, title)=>{
+                return this._goTo(url, data, title);
+            },
+
+            historyMode: this._historyMode
+        };
+        this.routes.some((route)=>{
+            if(this._requestPath().match(route.regExp)) {
+                route.current = true;
+                found = true;
+
+                let request = {};
+                request.param = this._processRequestParameters(route);
+                request.uri = window.location.pathname;
+
+                return route.callback.call(route.thisArg, request, routerObj);
+            }
+        },this)
+
+        if(!found){
+            if(!this._notFoundFunction) return;
+            let request = {};
+            request.uri = window.location.pathname;
+            return this._notFoundFunction(request, routerObj);
         }
-        
-        this.routes.push({
-            name: groupName,
-            pattern :  routeUrl,
-            regEx : route,
-            callback : cb,
-            params: parameters
-        });*/
-        //return this;
-    //}
+    }
 
+    /**
+     * A callback handler to execute if no route is matched.
+     * @param {function} callback Callback function
+     * @example
+     * router.notFoundHandler(function(){
+     * console.log("page not found");
+     * // or redirect to the 404 page
+     * // or do anything you want!
+     * });
+     */
+    notFoundHandler(callback){
+        if(!this._var.isSet(callback)) throw new ArgNotFound("callback");
+        if(!this._var.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
+
+        this._notFoundFunction = callback;
+        return this;
+    }
+
+    /**
+     * Redirect one url to another
+     * @private
+     * @todo create api for redirecting routes
+     */
     redirect(oldUrl, newUrl){
-        oldUrl = oldUrl.toLowerCase();
-        newUrl = newUrl.toLowerCase();
+        /*if(this._caseInsensitive){
+            oldUrl = oldUrl.toLowerCase();
+            newUrl = newUrl.toLowerCase();
+        }
 
         if(oldUrl === newUrl) throw new Error("Redirect loop found as both urls are the same");
 
@@ -109,100 +311,147 @@ class Router {
             });
         }
 
-        if (this.requestPath.match(`${oldUrl}$`)){
+        if (this._requestPath().match(`${oldUrl}$`)){
             return window.location.href= newUrl;
-        }
+        }*/
         return this;
     }
-    
+
     /**
-     * Returns the url path of a named route.
-     * If params is included, the value of the parameters will be passed into the url.
-     * @param {string} routeName A string containing the name of the route
-     * @param {object} params An object of keys and values containing the parameters of the route
-     * @returns {string} url
+     * Route grouping
+     * @todo create api for grouping routes
+     * @private
      */
-    pathFor(routeName, params = {}){
-        let url;
-        let routeNameFound = false;
+    group(){
+
+    }
+
+    _goTo(url, data = {}, title =""){
+        if(!this._var.isSet(url) || !this._var.isString(url)) throw new ArgTypeError("url", "string", url);
+        if(this._var.isEmpty(url)) throw new TypeError("url cannot be empty");
+
+        if(!this._historyMode){
+            let storage = window.localStorage;
+            storage.setItem("pushState", data);
+            return window.location.href= url;
+        }
+
+        window.history.pushState(data, title, url);
+        return this.init();
+    }
+
+    _pathFor(name, parameters = {}){
+
+        if(!this._var.isSet(name) || !this._var.isString(name)) throw new ArgTypeError("name", "string", string);
+        let nameFound = false;
+        let uri;
         this.routes.some(route=>{
-            if(route.name === routeName){
-                routeNameFound = true;
-                url = route.pattern;
-                if(route.params.length === 0 || Object.getOwnPropertyNames(route.params).length === 0) return url; // if there are no parameters for this route
-
-                let routeParamsProps = Object.getOwnPropertyNames(route.params);
-                let paramsProps = Object.getOwnPropertyNames(params);
-
-                // if this route requires some parameters and none given or the required number of params not given
-                if(paramsProps.length !== routeParamsProps.length) throw new Error(`The route pattern ${route.pattern} requires ${routeParamsProps.length} parameter(s). ${paramsProps.length} found`)
-                
-                for(let key in params){
-                    if(!route.params.hasOwnProperty(key)) throw new Error(`Invalid route parameter (${key}) found in the given parameters`);
-                    url = url.replace(`{${key}}`, params[key])
+            if(route.name === name){
+                nameFound = true;
+                uri = route.uri;
+                if(this._containsParameter(uri)){
+                    
+                    if(!this._var.isSet(parameters) || !this._var.isObject(parameters)) throw new ArgTypeError("parameters", "object", parameters);
+                    let array  = [];
+                    for(let value of route.uri.match(/\{(\w+)\}/g)){
+                        value = value.replace("{","");
+                        value = value.replace("}","");
+                        array.push(value);
+                    }
+                    if(array.length !== Object.getOwnPropertyNames(parameters).length) throw new Error(`The route with name [${name}] contains ${array.length} parameters. ${Object.getOwnPropertyNames(parameters).length} given`)
+                    for(let parameter in parameters){
+                        if (!array.includes(parameter)) throw new Error(`Invalid parameter name [${parameter}]`);
+                        let r = new RegExp(`{${parameter}}`,"g");
+                        uri = uri.replace(r, parameters[parameter]);
+                    }
                 }
-                return;
             }
         });
-        if (!routeNameFound) throw new Error(`Invalid route name (${routeName})`);
-        return url;
+        if (!nameFound) throw new Error(`Invalid route name [${name}]`);
+        return uri;
     }
 
-    notFound(){
-        if(!this._notFoundFunc){
-            throw new Error("notFoundHandler is not set. Use Router.setNotFoundHandler() method to set it.");
-        } else {
-            return this._notFoundFunc();
+    _proccessParameters(uri){
+        let parameters = [];
+        let sn = 0;
+
+        if(this._containsParameter(uri)){
+            uri.replace(/\{\w+\}/g,(parameter)=>{
+                sn++;
+                parameter.replace(/\w+/, (parameterName)=>{
+                    let obj = {};
+                    obj[parameterName] = {
+                        sn: sn,
+                        regExp: "(\\w+)",
+                        value: null
+                    }
+                    parameters.push(obj);
+                });
+            });
         }
+        
+        return parameters;
     }
 
-    notFoundHandler(cb=null){
+    _proccessRegExp(route){
+        let regExp = route.uri;
 
-        this._notFoundFunc = cb;
+        // escape special characters
+        regExp = regExp.replace(/\//g, "\\/");
+        regExp = regExp.replace(/\./g, "\\.");
+        regExp = regExp.replace("/", "/?");
+
+        if(this._containsParameter(route.uri)){
+
+            //replace uri parameters with their regular expression
+            regExp.replace(/{\w+}/g, (parameter)=>{
+                let parameterName = parameter.replace("{","");
+                parameterName = parameterName.replace("}","");
+                route.parameters.some((i)=>{
+                    if(i[parameterName] !== undefined) {
+                        regExp = regExp.replace(parameter, i[parameterName].regExp)
+                        return regExp;
+                    }
+                });
+                return parameter;
+            });
+        }
+        regExp = `^${regExp}$`;
+        route.regExp = new RegExp(regExp);
+        return route;
+    }
+
+    _containsParameter(uri){
+        return uri.search(/{\w+}/g) >= 0;
+    }
+
+    _processRequestParameters(route){
+        let routeMatched = this._requestPath().match(route.regExp);
+        if (!routeMatched) return;
+        let param = {};
+        routeMatched.forEach((value, index)=>{
+            if(index !== 0){
+                let key = Object.getOwnPropertyNames(route.parameters[index - 1]);
+                param[key] = value;
+            }
+        });
+        return param;
+    }
+
+    _requestPath(){
+        return window.location.pathname;
+    }
+
+    _checkHistoryMode(){
+        if(!this._historyMode) return;
+
+        if(!window.PopStateEvent && !"pushState" in history) return; // check for support of popstate event and pushstate in browser
+
+        window.addEventListener("popstate", (e)=>{
+            this.init();
+        });
+
         return this;
     }
-
-    _getParameters(route, cb){
-        let params = [];
-        if((route.indexOf("{") && route.indexOf("}")) > -1){
-            let startIndex = 0;
-            let startPosition = 0;
-            let endPosition = 0;
-            let loopStarted = 0;
-
-            while(startIndex <= route.length){
-                startPosition = route.indexOf("{", startIndex);
-                endPosition = route.indexOf("}", startIndex + loopStarted)
-                let parameter = route.substring(startPosition+1, endPosition);
-                params.push(parameter);
-                startIndex = startIndex + endPosition;
-                loopStarted = 1;
-            }
-        }
-        let newRoute = route.replace(/\{{1}\w*\}{1}/gi, "(.+)");
-        
-        return cb(params, newRoute);
-    }
-
-    _getParameterValue(regEx, paramNames){
-        let param = [];
-        let routeParams = {} // route  parameters in object for
-        let array = this.requestPath.match(`${regEx}$`);
-        if(array)
-            array.forEach((value, index) => {
-                if(index !== 0){
-                    param.push({
-                        [paramNames[index-1]] : value
-                    });
-                }
-            });
-        param.forEach(el=>{
-            for(let key in el){
-                routeParams[key] = el[key];
-            }
-        })
-        return routeParams;
-    }
 }
-Router = new Router();
-export default Router;
+export default SPARouter;

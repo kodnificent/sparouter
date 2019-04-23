@@ -1,44 +1,43 @@
-var gulp = require("gulp");
-var uglify = require("gulp-uglify");
-var babel = require("gulp-babel");
-var sourceMaps = require ("gulp-sourcemaps");
-var eslint = require("gulp-eslint");
-var del = require("del");
-var runSequence = require("run-sequence");
+const {src, dest, watch, series, parallel,task} = require("gulp");
+const uglify = require("gulp-uglify");
+const babel = require("gulp-babel");
+const sourceMaps = require ("gulp-sourcemaps");
+//const eslint = require("gulp-eslint");
+const del = require("del");
+//const runSequence = require("run-sequence");
+const rename = require("gulp-rename");
 
-gulp.task("dev", ()=>{
-    gulp.start("estransform");
-    gulp.start("watch");
-});
-
-gulp.task("build", (cb)=>{
-    return runSequence(
-        "clean:build",
-        "js",
-        cb
-    );
-});
-
-gulp.task("js", ()=>{
-    return gulp.src("src/**/*.js")
+function js(cb){
+    src("src/**/*.js")
         .pipe(sourceMaps.init())
-        .pipe(uglify())
-        .pipe(sourceMaps.write("."))
-        .pipe(gulp.dest("dist"));
-});
-
-gulp.task("estransform",()=>{
-    return gulp.src("src/**/*.js")
-        //.pipe(eslint())
         .pipe(babel({
-            presets:["babel-preset-env"]
+            //plugins: "babel-plugin-transform-remove-console"
         }))
-})
+        .pipe(uglify())
+        .pipe(rename(path=>{
+            path.extname = ".min.js";
+        }))
+        .pipe(sourceMaps.write("."))
+        .pipe(dest("dist"));
+    cb();
+}
 
-gulp.task("clean:build", ()=>{
-    return del.sync("dist/*");
-}); 
+function estransform(cb){
+    src("src/**/*.js")
+        .pipe(sourceMaps.init())
+        .pipe(babel())
+        .pipe(sourceMaps.write("."))
+        .pipe(dest("dist"));
+    cb();
+};
 
-gulp.task("watch", ()=>{
-    return gulp.watch("dist/**/*.js", ["estransform"])
+function clean_build(cb){
+    del.sync("dist/*");
+    cb();
+};
+
+task("build", series(clean_build, js));
+
+task("dev", ()=>{
+    watch("src/**/*", {ignoreInitial: false}, estransform);
 });

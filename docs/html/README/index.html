@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>sparouter 1.0.0 | Documentation</title>
+  <meta name='description' content='A light weight SPA router basically for frontend routing'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' rel='stylesheet' />
+  <link href='assets/style.css' rel='stylesheet' />
+  <link href='assets/github.css' rel='stylesheet' />
+  <link href='assets/split.css' rel='stylesheet' />
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>sparouter</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#sparouter'
+                  class="">
+                  SPARouter
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#installation'
+                  class="">
+                  Installation
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#'
+                  class="">
+                  
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#'
+                  class="">
+                  
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sparouter'>
+      SPARouter
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>SPARouter is a very light-weight javascript plugin basically for routing front-end for single page applications.
+SPARouter allows you to create routes in your front-end whether it is a Single Page Application or not
+and pass function you would  want to execute if these routes are matched.</p>
+
+    <div class='pre p1 fill-light mt0'>SPARouter</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='installation'>
+      Installation
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>You can install SPARouter by hosting it locally or by cdn  </p>
+<ul>
+<li>via npm<br>
+<code>npm install sparouter</code></li>
+<li>via cdn<br>
+Include this code just before the closing head tag of your html page<br>
+<code>&#x3C;script src="https://unpkg/">&#x3C;/script></code></li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>Installation</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id=''>
+      
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Use SPARouter through these easy steps.</p>
+<ul>
+<li>first create a new instance of the <code>SPARouter</code> class by passing options to it.  </li>
+<li>Call the <code>router.get()</code> method for each route and add it's callback function to it.</li>
+<li>Call <code>router.notFoundHandler()</code> to add a callback function it no route was matched. i.e 404 handler</li>
+<li>Finally call the <code>router.init()</code> to initialize the router.</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> SPARouter <span class="hljs-keyword">from</span> <span class="hljs-string">"sparouter"</span>; <span class="hljs-comment">// if you are hosting locally</span>
+<span class="hljs-keyword">const</span> options = {
+<span class="hljs-attr">historyMode</span> : <span class="hljs-literal">true</span> <span class="hljs-comment">// set this to true if you use the HTML5 history mode API</span>
+}
+<span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> SPARouter(options);
+
+router.get(<span class="hljs-string">"/"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, router</span>)</span>{
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Welcome to my home page! The request url is <span class="hljs-subst">${req.url}</span>`</span>);
+<span class="hljs-comment">//outputs: Welcome to my home page! The request url is /</span>
+
+}).setName(<span class="hljs-string">"home"</span>);
+
+router.get(<span class="hljs-string">"/user/{username}"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, router</span>)</span>{
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Showing profile for <span class="hljs-subst">${req.param.username}</span>. To go back home click &lt;a href="<span class="hljs-subst">${router.pathFor(<span class="hljs-string">"home"</span>)}</span>"&gt;here&lt;/a&gt;`</span>);
+<span class="hljs-comment">// if url is /user/victor</span>
+<span class="hljs-comment">//ouputs: Showing profile for victor. To go back home click &lt;a href="/"&gt;here&lt;/a&gt; </span>
+
+}).setName(<span class="hljs-string">"user-profile"</span>);
+
+router.notFoundHandler(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"oops! the page you are looking for is probably eaten by a snake"</span>);
+<span class="hljs-comment">// if user navigates to /wrong-page</span>
+<span class="hljs-comment">//outputs: oops! the page you are looking for is probably eaten by a snake</span>
+
+});
+router.init();</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id=''>
+      
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>To full API documentation can be found <a href="docs/API.md">here</a>.</p>
+
+    <div class='pre p1 fill-light mt0'></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
+  <script src='assets/site.js'></script>
+</body>
+</html>
