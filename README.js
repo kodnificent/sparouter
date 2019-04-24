@@ -1,22 +1,21 @@
 /**
- * @name SPARouter
- * @description
  * SPARouter is a very light-weight javascript plugin basically for routing front-end for single page applications.
  * SPARouter allows you to create routes in your front-end whether it is a Single Page Application or not
- * and pass function you would  want to execute if these routes are matched. 
+ * and pass function you would  want to execute if these routes are matched.
  */
+SPARouter
+
 /**
- * @name Installation
- * @description You can install SPARouter by hosting it locally or by cdn  
+ * You can install SPARouter by hosting it locally or by cdn
  * - via npm  
  * `npm install sparouter`
  * - via cdn  
  * Include this code just before the closing head tag of your html page  
- * `<script src="https://unpkg/"></script>`  
+ * ``<script src="https://unpkg/"></script>``
  */
+Installation
+
 /**
- * @name Basic Usage
- * @description
  * Use SPARouter through these easy steps.
  * - first create a new instance of the `SPARouter` class by passing options to it.  
  * - Call the `router.get()` method for each route and add it's callback function to it.
@@ -53,8 +52,9 @@
  * });
  * router.init();
  */
+BasicUsage
+
 /**
- * @name API Documentation
- * @description
  * The full API documentation can be found [here](docs/API.md).
  */
+API

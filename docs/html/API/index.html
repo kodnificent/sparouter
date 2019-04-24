@@ -26,87 +26,61 @@
               
                 
                 <li><a
-                  href='#sparouter'
-                  class=" toggle-sibling">
-                  SPARouter
-                  <span class='icon'>▸</span>
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
                 </a>
-                
-                <div class='toggle-target display-none'>
-                  
-                  
-                    <ul class='list-reset py1-ul pl1'>
-                      <li class='h5'><span>Instance members</span></li>
-                      
-                      <li><a
-                        href='#sparouterget'
-                        class='regular pre-open'>
-                        #get
-                      </a></li>
-                      
-                      <li><a
-                        href='#sparouterwhere'
-                        class='regular pre-open'>
-                        #where
-                      </a></li>
-                      
-                      <li><a
-                        href='#sparoutersetname'
-                        class='regular pre-open'>
-                        #setName
-                      </a></li>
-                      
-                      <li><a
-                        href='#sparouterinit'
-                        class='regular pre-open'>
-                        #init
-                      </a></li>
-                      
-                      <li><a
-                        href='#sparouternotfoundhandler'
-                        class='regular pre-open'>
-                        #notFoundHandler
-                      </a></li>
-                      
-                    </ul>
-                  
-                  
-                  
-                </div>
                 
                 </li>
               
                 
                 <li><a
-                  href='#router'
-                  class=" toggle-sibling">
-                  router
-                  <span class='icon'>▸</span>
+                  href='#get'
+                  class="">
+                  get
+                  
                 </a>
                 
-                <div class='toggle-target display-none'>
+                </li>
+              
+                
+                <li><a
+                  href='#where'
+                  class="">
+                  where
                   
-                  <ul class='list-reset py1-ul pl1'>
-                    <li class='h5'><span>Static members</span></li>
-                    
-                      <li><a
-                        href='#routergoto'
-                        class='regular pre-open'>
-                        .goTo
-                      </a></li>
-                    
-                      <li><a
-                        href='#routerpathfor'
-                        class='regular pre-open'>
-                        .pathFor
-                      </a></li>
-                    
-                    </ul>
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setname'
+                  class="">
+                  setName
                   
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#init'
+                  class="">
+                  init
                   
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#notfoundhandler'
+                  class="">
+                  notFoundHandler
                   
-                  
-                </div>
+                </a>
                 
                 </li>
               
@@ -130,6 +104,40 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#router'
+                  class=" toggle-sibling">
+                  router
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#routerpathfor'
+                        class='regular pre-open'>
+                        .pathFor
+                      </a></li>
+                    
+                      <li><a
+                        href='#routergoto'
+                        class='regular pre-open'>
+                        .goTo
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -145,16 +153,17 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='sparouter'>
-      SPARouter
+    <h3 class='fl m0' id='constructor'>
+      constructor
     </h3>
     
     
   </div>
   
 
-  
-    <div class='pre p1 fill-light mt0'>new SPARouter()</div>
+  <p>Instantiates the SPARouter Class.</p>
+
+    <div class='pre p1 fill-light mt0'>new constructor(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
   
   
 
@@ -166,31 +175,105 @@
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.caseInsensitive</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  
+    (default <code>true</code>)
+  </td>
+  <td class='break-word'><span>if set to false, uri matching will be case sensitive.
+</span></td>
+</tr>
 
-  
 
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.historyMode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
   
+    (default <code>false</code>)
+  </td>
+  <td class='break-word'><span>Set to true if your application uses HTML History Mode Api.
+<br>
 
-  
 
-  
+If set to historyMode, SPARouter will handle popstate events by initializing the router again to update the page
+according to the callback function set with 
+<code>SPARouter.get()</code>
+ method.
+</span></td>
+</tr>
 
-  
 
-  
-    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='sparouterget'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>get(uri, callback, thisArg)</span>
+              
+            </tbody>
+          </table>
+          
         </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
+      
+    </div>
+  
 
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> SPARouter({
+<span class="hljs-attr">historyMode</span>: <span class="hljs-literal">true</span>,
+<span class="hljs-attr">caseInsensitive</span>: <span class="hljs-literal">false</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='get'>
+      get
+    </h3>
+    
+    
+  </div>
   
 
   <p>The get method is used in assigning routes to your application</p>
@@ -292,24 +375,23 @@ SPARouter.get(<span class="hljs-string">"/some-page-name"</span>, myClass.pageFu
   
 </section>
 
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='sparouterwhere'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>where(name, regExp)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='where'>
+      where
+    </h3>
+    
+    
+  </div>
+  
 
-  <p>Match the uri route where a parameter name matches a regular expression. This method must be chained to the
-<code>SPARouter.get()</code> method.</p>
-
+  
     <div class='pre p1 fill-light mt0'>where(name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, regExp: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
@@ -384,19 +466,20 @@ Special characters which you wish to escape with the backslash must be double es
   
 </section>
 
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='sparoutersetname'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>setName(name)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setname'>
+      setName
+    </h3>
+    
+    
+  </div>
   
 
   <p>SPARouter supports named routes. This methods sets the name of a route and can be referrenced using the
@@ -464,19 +547,20 @@ router.get(<span class="hljs-string">"/user/home"</span>, <span class="hljs-func
   
 </section>
 
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='sparouterinit'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>init()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='init'>
+      init
+    </h3>
+    
+    
+  </div>
   
 
   <p>Initialize the Router.<br>
@@ -523,19 +607,20 @@ router.init();</pre>
   
 </section>
 
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='sparouternotfoundhandler'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>notFoundHandler(callback)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='notfoundhandler'>
+      notFoundHandler
+    </h3>
+    
+    
+  </div>
   
 
   <p>A callback handler to execute if no route is matched.</p>
@@ -594,10 +679,144 @@ router.init();</pre>
   
 </section>
 
-      </div>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='callback'>
+      callback
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Callback function passed in the <code>SPARouter.get()</code> method.</p>
+
+    <div class='pre p1 fill-light mt0'>callback(request: <a href="#request">request</a>, router: <a href="#router">router</a>)</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>request</span> <code class='quiet'>(<a href="#request">request</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>router</span> <code class='quiet'>(<a href="#router">router</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
     </div>
   
-</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='request'>
+      request
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>The request object is passed as a callback parameter</p>
+
+    <div class='pre p1 fill-light mt0'>request</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>param</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+          : an object of parameters and their value.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>uri</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : the current request uri
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -622,7 +841,8 @@ router.init();</pre>
   </div>
   
 
-  
+  <p>The router object is also passed as a callback parameter</p>
+
     <div class='pre p1 fill-light mt0'>router</div>
   
     <p>
@@ -676,95 +896,6 @@ router.init();</pre>
   
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
-  
-    <div class='border-bottom' id='routergoto'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>goTo</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Use this method if you would like to <strong>go to</strong> or <strong>redirect</strong> to a link.<br>
-This method uses window.location.href parsing the url param as the href.<br>
-If the historyMode method is set to true, it utilizes the history.pushState() passing
-the params and reinitializing the router.</p>
-
-    <div class='pre p1 fill-light mt0'>goTo</div>
-  
-    <p>
-      Type:
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
-            = <code>{}</code>)</code>
-	    an object of data for HTML history.pushState()
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
-            = <code>&quot;&quot;</code>)</code>
-	    title for HTML history.pushState()
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
   
     <div class='border-bottom' id='routerpathfor'>
       <div class="clearfix small pointer toggle-sibling">
@@ -859,39 +990,28 @@ router.get(<span class="hljs-string">"/blog/{slug}"</span>, <span class="hljs-fu
       </div>
     </div>
   
-</div>
+    <div class='border-bottom' id='routergoto'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>goTo</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
-  
+  <p>Use this method if you would like to <strong>go to</strong> or <strong>redirect</strong> to a link.<br>
+This method uses window.location.href parsing the url param as the href.<br>
+If the historyMode method is set to true, it utilizes the history.pushState() passing
+the params and reinitializing the router.</p>
 
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='callback'>
-      callback
-    </h3>
-    
-    
-  </div>
-  
-
-  
-    <div class='pre p1 fill-light mt0'>callback(request: <a href="#request">request</a>, router: <a href="#router">router</a>)</div>
+    <div class='pre p1 fill-light mt0'>goTo</div>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>
     </p>
   
   
@@ -909,16 +1029,29 @@ router.get(<span class="hljs-string">"/blog/{slug}"</span>, <span class="hljs-fu
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>request</span> <code class='quiet'>(<a href="#request">request</a>)</code>
-	    
+            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>router</span> <code class='quiet'>(<a href="#router">router</a>)</code>
-	    
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    an object of data for HTML history.pushState()
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&quot;&quot;</code>)</code>
+	    title for HTML history.pushState()
+
           </div>
           
         </div>
@@ -943,67 +1076,10 @@ router.get(<span class="hljs-string">"/blog/{slug}"</span>, <span class="hljs-fu
   
 </section>
 
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='request'>
-      request
-    </h3>
-    
-    
-  </div>
-  
-
-  
-    <div class='pre p1 fill-light mt0'>request</div>
-  
-    <p>
-      Type:
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>param</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
-          : an object of parameters and their value.
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>uri</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : the current request uri
-
-          
-        </div>
-      
+      </div>
     </div>
   
-
-  
-
-  
-
-  
+</div>
 
   
 

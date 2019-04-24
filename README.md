@@ -4,7 +4,9 @@
 
 -   [SPARouter][1]
 -   [Installation][2]
-    -   [Examples][3]
+-   [BasicUsage][3]
+    -   [Examples][4]
+-   [API][5]
 
 ## SPARouter
 
@@ -14,7 +16,7 @@ and pass function you would  want to execute if these routes are matched.
 
 ## Installation
 
-You can install SPARouter by hosting it locally or by cdn  
+You can install SPARouter by hosting it locally or by cdn
 
 -   via npm  
     `npm install sparouter`
@@ -22,7 +24,7 @@ You can install SPARouter by hosting it locally or by cdn
     Include this code just before the closing head tag of your html page  
     `<script src="https://unpkg/"></script>`
 
-## 
+## BasicUsage
 
 Use SPARouter through these easy steps.
 
@@ -65,14 +67,18 @@ console.log("oops! the page you are looking for is probably eaten by a snake");
 router.init();
 ```
 
-## 
+## API
 
-The full API documentation can be found [here][4].
+The full API documentation can be found [here][6].
 
 [1]: #sparouter
 
 [2]: #installation
 
-[3]: #examples
+[3]: #basicusage
 
-[4]: docs/API.md
+[4]: #examples
+
+[5]: #api
+
+[6]: docs/API.md

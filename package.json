@@ -5,20 +5,22 @@
   "main": "/dist/sparouter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp build",
-    "watch": "gulp dev"
+    "dev": "npm run development",
+    "watch": "npm run development -- --watch",
+    "development": "webpack --mode development",
+    "prod": "npm run production",
+    "production": "webpack --mode production",
+    "build-readme": "documentation build README.js -f md -o README.md --shallow && documentation build README.js -f html -o ./docs/html/README/ --shallow && documentation build ./src/sparouter.js -f md -o ./docs/API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/html/API/ --shallow"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/sirvic-tech/sparouter.git"
   },
   "keywords": [
-    "front-end",
-    "router",
-    "client",
     "routing",
-    "javascript",
-    "routing"
+    "javascript-router",
+    "routing",
+    "vue-router"
   ],
   "author": "sirvic-tech",
   "license": "MIT",
@@ -29,17 +31,11 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
+    "babel-loader": "^8.0.5",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "del": "^3.0.0",
     "documentation": "^10.0.0",
-    "gulp": "^4.0.1",
-    "gulp-babel": "^8.0.0",
-    "gulp-eslint": "^5.0.0",
-    "gulp-if": "^2.0.2",
-    "gulp-rename": "^1.4.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
-    "run-sequence": "^2.2.1"
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
   },
   "dependencies": {}
 }

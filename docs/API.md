@@ -2,53 +2,74 @@
 
 ### Table of Contents
 
--   [SPARouter][1]
-    -   [get][2]
-        -   [Parameters][3]
-        -   [Examples][4]
-    -   [where][5]
-        -   [Parameters][6]
-        -   [Examples][7]
-    -   [setName][8]
-        -   [Parameters][9]
-        -   [Examples][10]
-    -   [init][11]
-        -   [Examples][12]
-    -   [notFoundHandler][13]
-        -   [Parameters][14]
-        -   [Examples][15]
--   [router][16]
-    -   [Properties][17]
-    -   [goTo][18]
-        -   [Parameters][19]
-    -   [pathFor][20]
-        -   [Parameters][21]
-        -   [Examples][22]
--   [callback][23]
-    -   [Parameters][24]
--   [request][25]
-    -   [Properties][26]
+-   [constructor][1]
+    -   [Parameters][2]
+    -   [Examples][3]
+-   [get][4]
+    -   [Parameters][5]
+    -   [Examples][6]
+-   [where][7]
+    -   [Parameters][8]
+    -   [Examples][9]
+-   [setName][10]
+    -   [Parameters][11]
+    -   [Examples][12]
+-   [init][13]
+    -   [Examples][14]
+-   [notFoundHandler][15]
+    -   [Parameters][16]
+    -   [Examples][17]
+-   [callback][18]
+    -   [Parameters][19]
+-   [request][20]
+    -   [Properties][21]
+-   [router][22]
+    -   [Properties][23]
+    -   [pathFor][24]
+        -   [Parameters][25]
+        -   [Examples][26]
+    -   [goTo][27]
+        -   [Parameters][28]
 
-## SPARouter
+## constructor
 
-### get
+Instantiates the SPARouter Class.
+
+### Parameters
+
+-   `options` **[Object][29]** 
+    -   `options.caseInsensitive` **[boolean][30]** if set to false, uri matching will be case sensitive. (optional, default `true`)
+    -   `options.historyMode` **[boolean][30]** Set to true if your application uses HTML History Mode Api.  
+        If set to historyMode, SPARouter will handle popstate events by initializing the router again to update the page
+        according to the callback function set with `SPARouter.get()` method. (optional, default `false`)
+
+### Examples
+
+```javascript
+const router = new SPARouter({
+historyMode: true,
+caseInsensitive: false
+});
+```
+
+## get
 
 The get method is used in assigning routes to your application
 
-#### Parameters
+### Parameters
 
--   `uri` **([string][27] \| [RegExp][28])** route to be matched
--   `callback` **[callback][29]** a callback function to be invoked if the route has been matched.
--   `thisArg` **[object][30]** an argument that represents `this` keyword in your callback function. If empty, you will get undefined
+-   `uri` **([string][31] \| [RegExp][32])** route to be matched
+-   `callback` **[callback][33]** a callback function to be invoked if the route has been matched.
+-   `thisArg` **[object][29]** an argument that represents `this` keyword in your callback function. If empty, you will get undefined
     if you try to use `this` keyword in your callback function.  
     You can't pass the SPARouter class as `this` argument as it will return undefined also. The SPARouter class is already provided in the callback function (optional, default `undefined`)
 
-#### Examples
+### Examples
 
 ```javascript
 // using a callback function
 SPARouter.get("/some-page-name", (req, router)=>{
-     console.log(this.argument); // outputs "A stored argument from my class" to the console
+     console.log(this.argument); // outputs "A stored argument from my callback function" to the console
      console.log(req.url); // outputs "/some-page-name" to the console
 }, {argument: "A stored argument from my callback function"}); // this ouputs "a stored argument from my callback function" to the console.
 
@@ -66,19 +87,16 @@ myClass = new SomeClass();
 SPARouter.get("/some-page-name", myClass.pageFunc, myClass);
 ```
 
-### where
+## where
 
-Match the uri route where a parameter name matches a regular expression. This method must be chained to the
-`SPARouter.get()` method.
+### Parameters
 
-#### Parameters
-
--   `name` **[string][27]** parameter name to match
--   `regExp` **[string][27]** regular expression pattern but must be in string format, without front slashes that converts
+-   `name` **[string][31]** parameter name to match
+-   `regExp` **[string][31]** regular expression pattern but must be in string format, without front slashes that converts
     it to a regExp object. E.g "0-9", "[A-Z]". See example below  
     Special characters which you wish to escape with the backslash must be double escaped. E.g "\\\\w" instead of "\\w";
 
-#### Examples
+### Examples
 
 ```javascript
 router.get("/{page-name}/{id}",function(req, router){
@@ -90,17 +108,17 @@ router.get("/{page-name}/{id}",function(req, router){
 // it won't match my-site.com/admin/10, my-site.com/user/login
 ```
 
-### setName
+## setName
 
 SPARouter supports named routes. This methods sets the name of a route and can be referrenced using the
 `router.pathFor(name)` inside your callback function in `SPARouter.get()` method.  
 This method must be chained to the `SPARouter.get()` method.
 
-#### Parameters
+### Parameters
 
--   `name` **[string][27]** route name
+-   `name` **[string][31]** route name
 
-#### Examples
+### Examples
 
 ```javascript
 router = new SPARouter(options)
@@ -117,12 +135,12 @@ console.log(router.pathFor("user-login")) // outputs: /user/login
 }).setName("user-home")
 ```
 
-### init
+## init
 
 Initialize the Router.  
 Call this method after setting up all route paths.
 
-#### Examples
+### Examples
 
 ```javascript
 const router = new SPARouter(myOptions);
@@ -133,15 +151,15 @@ router.notFoundHandler(myNotFoundHandler);
 router.init();
 ```
 
-### notFoundHandler
+## notFoundHandler
 
 A callback handler to execute if no route is matched.
 
-#### Parameters
+### Parameters
 
--   `callback` **[function][31]** Callback function
+-   `callback` **[function][34]** Callback function
 
-#### Examples
+### Examples
 
 ```javascript
 router.notFoundHandler(function(){
@@ -151,42 +169,51 @@ console.log("page not found");
 });
 ```
 
+## callback
+
+Callback function passed in the `SPARouter.get()` method.
+
+Type: [Function][34]
+
+### Parameters
+
+-   `request` **[request][35]** 
+-   `router` **[router][36]** 
+
+## request
+
+The request object is passed as a callback parameter
+
+Type: [Object][29]
+
+### Properties
+
+-   `param` **[Object][29]** an object of parameters and their value.
+-   `uri` **[string][31]** the current request uri
+
 ## router
 
-Type: [Object][30]
+The router object is also passed as a callback parameter
+
+Type: [Object][29]
 
 ### Properties
 
 -   `pathFor` **pathFor** 
 -   `goTo` **goTo** 
--   `historyMode` **[boolean][32]** check if history mode is set
-
-### goTo
-
-Use this method if you would like to **go to** or **redirect** to a link.  
-This method uses window.location.href parsing the url param as the href.  
-If the historyMode method is set to true, it utilizes the history.pushState() passing
-the params and reinitializing the router.
-
-Type: [function][31]
-
-#### Parameters
-
--   `url` **[string][27]** The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
--   `data` **[Object][30]** an object of data for HTML history.pushState() (optional, default `{}`)
--   `title` **[string][27]** title for HTML history.pushState() (optional, default `""`)
+-   `historyMode` **[boolean][30]** check if history mode is set
 
 ### pathFor
 
 Returns the uri path for a named route.  
 If the route has parameters, an object of the parameter name as `key` and parameter value as `value` should be passed as second argument.
 
-Type: [function][31]
+Type: [function][34]
 
 #### Parameters
 
--   `name` **[string][27]** The name of the route
--   `parameter` **[Object][30]?** An object of keys and values containing the parameters of the route and its corresponding value.
+-   `name` **[string][31]** The name of the route
+-   `parameter` **[Object][29]?** An object of keys and values containing the parameters of the route and its corresponding value.
 
 #### Examples
 
@@ -197,90 +224,91 @@ console.log(router.pathFor("blog-post", { slug: "hello-world"})) //outputs: /blo
 }).setName("blog-post");
 ```
 
-Returns **[string][27]** uri
+Returns **[string][31]** uri
 
-## callback
+### goTo
 
-Type: [Function][31]
+Use this method if you would like to **go to** or **redirect** to a link.  
+This method uses window.location.href parsing the url param as the href.  
+If the historyMode method is set to true, it utilizes the history.pushState() passing
+the params and reinitializing the router.
 
-### Parameters
+Type: [function][34]
 
--   `request` **[request][33]** 
--   `router` **[router][34]** 
+#### Parameters
 
-## request
+-   `url` **[string][31]** The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
+-   `data` **[Object][29]** an object of data for HTML history.pushState() (optional, default `{}`)
+-   `title` **[string][31]** title for HTML history.pushState() (optional, default `""`)
 
-Type: [Object][30]
+[1]: #constructor
 
-### Properties
+[2]: #parameters
 
--   `param` **[Object][30]** an object of parameters and their value.
--   `uri` **[string][27]** the current request uri
+[3]: #examples
 
-[1]: #sparouter
+[4]: #get
 
-[2]: #get
+[5]: #parameters-1
 
-[3]: #parameters
+[6]: #examples-1
 
-[4]: #examples
+[7]: #where
 
-[5]: #where
+[8]: #parameters-2
 
-[6]: #parameters-1
+[9]: #examples-2
 
-[7]: #examples-1
+[10]: #setname
 
-[8]: #setname
-
-[9]: #parameters-2
-
-[10]: #examples-2
-
-[11]: #init
+[11]: #parameters-3
 
 [12]: #examples-3
 
-[13]: #notfoundhandler
+[13]: #init
 
-[14]: #parameters-3
+[14]: #examples-4
 
-[15]: #examples-4
+[15]: #notfoundhandler
 
-[16]: #router
+[16]: #parameters-4
 
-[17]: #properties
+[17]: #examples-5
 
-[18]: #goto
+[18]: #callback
 
-[19]: #parameters-4
+[19]: #parameters-5
 
-[20]: #pathfor
+[20]: #request
 
-[21]: #parameters-5
+[21]: #properties
 
-[22]: #examples-5
+[22]: #router
 
-[23]: #callback
+[23]: #properties-1
 
-[24]: #parameters-6
+[24]: #pathfor
 
-[25]: #request
+[25]: #parameters-6
 
-[26]: #properties-1
+[26]: #examples-6
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[27]: #goto
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+[28]: #parameters-7
 
-[29]: #callback
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[33]: #request
+[33]: #callback
 
-[34]: #router
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[35]: #request
+
+[36]: #router

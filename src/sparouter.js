@@ -1,21 +1,19 @@
-import {
-    variableChecker, ArgumentNotFoundError as ArgNotFound, ArgumentTypeError as ArgTypeError
-} from "./helpers";
+import Utils, {
+    ArgumentNotFoundError as ArgNotFound, ArgumentTypeError as ArgTypeError
+} from "./utils.js";
 
-/**
- * @class SPARouter
- */
 class SPARouter {
 
      /**
      * Instantiates the SPARouter Class.
+     * @constructor
      * @param {Object} options
      * @param {boolean} [options.caseInsensitive=true] - if set to false, uri matching will be case sensitive.
      * @param {boolean} [options.historyMode=false] - Set to true if your application uses HTML History Mode Api.  
      * If set to historyMode, SPARouter will handle popstate events by initializing the router again to update the page
      * according to the callback function set with ``SPARouter.get()`` method.
      * @example
-     * router = new SPARouter({
+     * const router = new SPARouter({
      * historyMode: true,
      * caseInsensitive: false
      * });
@@ -23,7 +21,6 @@ class SPARouter {
     constructor(options){
         this.routes = [];
         this.path =  this._requestPath();
-        this._var = variableChecker;
 
         //default options
         let defOptions = {
@@ -35,12 +32,13 @@ class SPARouter {
             this[`_${key}`] = mergedOptions[key];
         }
         this._checkHistoryMode();
-
+        console.debug("SPARouter class constructed");
         return this;
     }
 
     /**
      * The get method is used in assigning routes to your application
+     * @method
      * @param {string | RegExp} uri route to be matched
      * @param {callback} callback a callback function to be invoked if the route has been matched.
      * @param {object} [thisArg=undefined] an argument that represents ``this`` keyword in your callback function. If empty, you will get undefined
@@ -68,56 +66,17 @@ class SPARouter {
      */
     
     /**
+     * Callback function passed in the ```SPARouter.get()``` method.
      * @callback callback
      * @param {request} request
      * @param {router} router
      */
-
-     /**
-      * @typedef {Object} request
-      * @property {Object} param an object of parameters and their value.
-      * @property {string} uri the current request uri
-      */
-
-     /**
-      * @typedef {Object} router
-      * @property {pathFor} pathFor
-      * @property {goTo} goTo
-      * @property {boolean} historyMode check if history mode is set
-      */
-    
-    /**
-     * Returns the uri path for a named route.  
-     * If the route has parameters, an object of the parameter name as ``key`` and parameter value as ``value`` should be passed as second argument.
-     * @typedef {function} pathFor
-     * @memberof router
-     * @param {string} name The name of the route
-     * @param {Object} [parameter] An object of keys and values containing the parameters of the route and its corresponding value.
-     * @returns {string} uri
-     * @example
-     * var router = new SPARouter(options);
-     * router.get("/blog/{slug}", function(req, router){
-     * console.log(router.pathFor("blog-post", { slug: "hello-world"})) //outputs: /blog/hello-world
-     * }).setName("blog-post");
-     */
-
-    /**
-     * Use this method if you would like to **go to** or **redirect** to a link.  
-     * This method uses window.location.href parsing the url param as the href.  
-     * If the historyMode method is set to true, it utilizes the history.pushState() passing
-     * the params and reinitializing the router.
-     * @typedef {function} goTo
-     * @memberof router
-     * @param {string} url The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
-     * @param {Object} [data={}] an object of data for HTML history.pushState()
-     * @param {string} [title=""] title for HTML history.pushState()
-     */
     get(uri, callback, thisArg){
-        if(!this._var.isSet(uri)) throw new ArgNotFound("uri")
-        if(!this._var.isSet(callback)) throw new ArgNotFound("callback");
+        if(!Utils.isSet(uri)) throw new ArgNotFound("uri")
+        if(!Utils.isSet(callback)) throw new ArgNotFound("callback");
 
-        if(!this._var.isString(uri)) throw new ArgTypeError("uri", "string", uri);
-        if(!this._var.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
+        if(!Utils.isString(uri)) throw new ArgTypeError("uri", "string", uri);
+        if(!Utils.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
 
         thisArg = thisArg instanceof SPARouter ? undefined : thisArg;
 
@@ -148,6 +107,7 @@ class SPARouter {
     }
 
     /**
+     * @method
      * Match the uri route where a parameter name matches a regular expression. This method must be chained to the
      * ``SPARouter.get()`` method.
      * @param {string} name parameter name to match
@@ -166,10 +126,10 @@ class SPARouter {
     where(name, regExp){
         
         //validate type
-        if(!this._var.isSet(name)) throw new ArgNotFound("name");
-        if(!this._var.isSet(regExp)) throw new ArgNotFound("regExp");
-        if(!this._var.isString(name)) throw new ArgTypeError("name", "string", name);
-        if(!this._var.isString(regExp)) throw new ArgTypeError("regExp", "string", regExp);
+        if(!Utils.isSet(name)) throw new ArgNotFound("name");
+        if(!Utils.isSet(regExp)) throw new ArgNotFound("regExp");
+        if(!Utils.isString(name)) throw new ArgTypeError("name", "string", name);
+        if(!Utils.isString(regExp)) throw new ArgTypeError("regExp", "string", regExp);
 
         let route = this.routes[this.routes.length - 1]; // the target route
         
@@ -198,6 +158,7 @@ class SPARouter {
      * SPARouter supports named routes. This methods sets the name of a route and can be referrenced using the
      * `router.pathFor(name)` inside your callback function in `SPARouter.get()` method.  
      * This method must be chained to the `SPARouter.get()` method.
+     * @method
      * @param {string} name route name
      * @example
      * router = new SPARouter(options)
@@ -214,8 +175,8 @@ class SPARouter {
      * }).setName("user-home")
      */
     setName(name){
-        if(!this._var.isSet(name)) throw new ArgNotFound("name");
-        if(!this._var.isString(name)) throw new ArgTypeError("name", "string", name);
+        if(!Utils.isSet(name)) throw new ArgNotFound("name");
+        if(!Utils.isString(name)) throw new ArgTypeError("name", "string", name);
 
         let targetRoute = this.routes[this.routes.length - 1];
         this.routes.forEach((route)=>{
@@ -228,6 +189,7 @@ class SPARouter {
     /**
      * Initialize the Router.  
      * Call this method after setting up all route paths.
+     * @method
      * @example
      * const router = new SPARouter(myOptions);
      * router.get("/", homeCallback);
@@ -244,7 +206,7 @@ class SPARouter {
         let found = false;
         let routerObj = {
             pathFor: (name, parameter)=>{
-                return this.pathFor(name, parameter);
+                return this._pathFor(name, parameter);
             },
 
             goTo: (url, data, title)=>{
@@ -276,6 +238,7 @@ class SPARouter {
 
     /**
      * A callback handler to execute if no route is matched.
+     * @method
      * @param {function} callback Callback function
      * @example
      * router.notFoundHandler(function(){
@@ -285,8 +248,8 @@ class SPARouter {
      * });
      */
     notFoundHandler(callback){
-        if(!this._var.isSet(callback)) throw new ArgNotFound("callback");
-        if(!this._var.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
+        if(!Utils.isSet(callback)) throw new ArgNotFound("callback");
+        if(!Utils.isFunction(callback)) throw new ArgTypeError("callback", "function", callback);
 
         this._notFoundFunction = callback;
         return this;
@@ -294,6 +257,7 @@ class SPARouter {
 
     /**
      * Redirect one url to another
+     * @method
      * @private
      * @todo create api for redirecting routes
      */
@@ -319,6 +283,7 @@ class SPARouter {
 
     /**
      * Route grouping
+     * @method
      * @todo create api for grouping routes
      * @private
      */
@@ -327,8 +292,9 @@ class SPARouter {
     }
 
     _goTo(url, data = {}, title =""){
-        if(!this._var.isSet(url) || !this._var.isString(url)) throw new ArgTypeError("url", "string", url);
-        if(this._var.isEmpty(url)) throw new TypeError("url cannot be empty");
+        if(!Utils.isSet(url)) throw new ArgNotFound("url");
+        if(!Utils.isString(url)) throw new ArgTypeError("url", "string", url);
+        if(Utils.isEmpty(url)) throw new TypeError("url cannot be empty");
 
         if(!this._historyMode){
             let storage = window.localStorage;
@@ -341,8 +307,9 @@ class SPARouter {
     }
 
     _pathFor(name, parameters = {}){
-
-        if(!this._var.isSet(name) || !this._var.isString(name)) throw new ArgTypeError("name", "string", string);
+        if(!Utils.isSet(name)) throw new ArgNotFound("name");
+        if(!Utils.isString(name)) throw new ArgTypeError("name", "string", string);
+        if(Utils.isEmpty(name)) throw new TypeError("name cannot be empty");
         let nameFound = false;
         let uri;
         this.routes.some(route=>{
@@ -351,7 +318,9 @@ class SPARouter {
                 uri = route.uri;
                 if(this._containsParameter(uri)){
                     
-                    if(!this._var.isSet(parameters) || !this._var.isObject(parameters)) throw new ArgTypeError("parameters", "object", parameters);
+                    if(!Utils.isSet(paramaters)) throw new ArgNotFound("parameters");
+                    if(!Utils.isObject(parameters)) throw new ArgTypeError("parameters", "object", parameters);
+                    if(Utils.isEmpty(parameters)) throw new TypeError("parameters cannot be empty");
                     let array  = [];
                     for(let value of route.uri.match(/\{(\w+)\}/g)){
                         value = value.replace("{","");
@@ -453,5 +422,47 @@ class SPARouter {
 
         return this;
     }
+
+     /**
+      * The request object is passed as a callback parameter
+      * @typedef {Object} request
+      * @property {Object} param an object of parameters and their value.
+      * @property {string} uri the current request uri
+      */
+
+     /**
+      * The router object is also passed as a callback parameter
+      * @typedef {Object} router
+      * @property {pathFor} pathFor
+      * @property {goTo} goTo
+      * @property {boolean} historyMode check if history mode is set
+      */
+    
+    /**
+     * Returns the uri path for a named route.  
+     * If the route has parameters, an object of the parameter name as ``key`` and parameter value as ``value`` should be passed as second argument.
+     * @typedef {function} pathFor
+     * @memberof router
+     * @param {string} name The name of the route
+     * @param {Object} [parameter] An object of keys and values containing the parameters of the route and its corresponding value.
+     * @returns {string} uri
+     * @example
+     * var router = new SPARouter(options);
+     * router.get("/blog/{slug}", function(req, router){
+     * console.log(router.pathFor("blog-post", { slug: "hello-world"})) //outputs: /blog/hello-world
+     * }).setName("blog-post");
+     */
+
+    /**
+     * Use this method if you would like to **go to** or **redirect** to a link.  
+     * This method uses window.location.href parsing the url param as the href.  
+     * If the historyMode method is set to true, it utilizes the history.pushState() passing
+     * the params and reinitializing the router.
+     * @typedef {function} goTo
+     * @memberof router
+     * @param {string} url The url you wish to goto. An absolute url is also acceptable so long it's of the same origin.
+     * @param {Object} [data={}] an object of data for HTML history.pushState()
+     * @param {string} [title=""] title for HTML history.pushState()
+     */
 }
 export default SPARouter;
