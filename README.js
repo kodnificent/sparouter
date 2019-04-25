@@ -11,13 +11,11 @@ SPARouter
  * `npm install @kodnificent/sparouter`
  * - via cdn  
  * Include this code just before the closing head tag of your html page  
- * ```
- * // for develpment use only
- * <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.js"></script>
+ * **For develpment use only**  
+ * <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.js"></script>  
  * 
- * // for production use
- * <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.min.js"></script>
- * ```
+ * **For production use**  
+ * <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.min.js"></script>  
  */
 Installation
 
