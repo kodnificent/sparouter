@@ -14,13 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sirvic-tech/sparouter.git"
+    "url": "git://github.com/kodnificent/sparouter.git"
   },
   "keywords": [
     "routing",
+    "vanilla-router",
     "javascript-router",
-    "routing",
-    "vue-router"
+    "single-page-router"
   ],
   "author": "sirvic-tech",
   "license": "MIT",

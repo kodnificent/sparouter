@@ -22,7 +22,13 @@ You can install SPARouter by hosting it locally or by cdn
     `npm install sparouter`
 -   via cdn  
     Include this code just before the closing head tag of your html page  
-    `<script src="https://unpkg/"></script>`
+
+
+    // for develpment use only
+    <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.js"></script>
+
+    // for production use
+    <script src="https://unpkg.com/@kodnificent/sparouter@1.0.0/dist/sparouter.min.js"></script>
 
 ## BasicUsage
 

@@ -58,8 +58,8 @@ The get method is used in assigning routes to your application
 
 ### Parameters
 
--   `uri` **([string][31] \| [RegExp][32])** route to be matched
--   `callback` **[callback][33]** a callback function to be invoked if the route has been matched.
+-   `uri` **[string][31]** route to be matched
+-   `callback` **[callback][32]** a callback function to be invoked if the route has been matched.
 -   `thisArg` **[object][29]** an argument that represents `this` keyword in your callback function. If empty, you will get undefined
     if you try to use `this` keyword in your callback function.  
     You can't pass the SPARouter class as `this` argument as it will return undefined also. The SPARouter class is already provided in the callback function (optional, default `undefined`)
@@ -157,7 +157,7 @@ A callback handler to execute if no route is matched.
 
 ### Parameters
 
--   `callback` **[function][34]** Callback function
+-   `callback` **[function][33]** Callback function
 
 ### Examples
 
@@ -173,12 +173,12 @@ console.log("page not found");
 
 Callback function passed in the `SPARouter.get()` method.
 
-Type: [Function][34]
+Type: [Function][33]
 
 ### Parameters
 
--   `request` **[request][35]** 
--   `router` **[router][36]** 
+-   `request` **[request][34]** 
+-   `router` **[router][35]** 
 
 ## request
 
@@ -208,7 +208,7 @@ Type: [Object][29]
 Returns the uri path for a named route.  
 If the route has parameters, an object of the parameter name as `key` and parameter value as `value` should be passed as second argument.
 
-Type: [function][34]
+Type: [function][33]
 
 #### Parameters
 
@@ -233,7 +233,7 @@ This method uses window.location.href parsing the url param as the href.
 If the historyMode method is set to true, it utilizes the history.pushState() passing
 the params and reinitializing the router.
 
-Type: [function][34]
+Type: [function][33]
 
 #### Parameters
 
@@ -303,12 +303,10 @@ Type: [function][34]
 
 [31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+[32]: #callback
 
-[33]: #callback
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[34]: #request
 
-[35]: #request
-
-[36]: #router
+[35]: #router

@@ -39,7 +39,7 @@ class SPARouter {
     /**
      * The get method is used in assigning routes to your application
      * @method
-     * @param {string | RegExp} uri route to be matched
+     * @param {string} uri route to be matched
      * @param {callback} callback a callback function to be invoked if the route has been matched.
      * @param {object} [thisArg=undefined] an argument that represents ``this`` keyword in your callback function. If empty, you will get undefined
      * if you try to use ``this`` keyword in your callback function.  
