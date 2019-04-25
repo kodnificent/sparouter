@@ -1,5 +1,5 @@
 {
-  "name": "sparouter",
+  "name": "@kodnificent/sparouter",
   "version": "1.0.0",
   "description": "A light weight SPA router basically for frontend routing",
   "main": "/dist/sparouter.js",
