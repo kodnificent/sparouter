@@ -8,7 +8,7 @@ SPARouter
 /**
  * You can install SPARouter by hosting it locally or by cdn
  * - via npm  
- * `npm install sparouter`
+ * `npm install @kodnificent/sparouter`
  * - via cdn  
  * Include this code just before the closing head tag of your html page  
  * ```
