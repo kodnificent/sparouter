@@ -13,6 +13,7 @@
     "development": "webpack --mode development",
     "prod": "npm run production",
     "production": "webpack --mode production",
+    "plugin-ready": "npm run development -- --removeConsole && npm run production",
     "build-readme": "documentation build README.js -f md -o README.md --shallow && documentation build README.js -f html -o ./docs/README.html --shallow && documentation build ./src/sparouter.js -f md -o ./API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/API.html --shallow"
   },
   "repository": {
