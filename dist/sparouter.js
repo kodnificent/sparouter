@@ -154,7 +154,6 @@ function () {
 
     this._checkHistoryMode();
 
-    console.debug("SPARouter class constructed");
     return this;
   }
   /**

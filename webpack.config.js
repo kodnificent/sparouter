@@ -33,7 +33,7 @@ module.exports = (env, argv) => {
         config.output.filename = '[name].min.js';
         config.module.rules[0].use.options.plugins = ['transform-remove-console'];
     }
-    if(argv.prodReady) {
+    if(argv.removeConsole) {
         config.module.rules[0].use.options.plugins = ['transform-remove-console'];
     }
     return config;
