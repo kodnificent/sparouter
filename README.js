@@ -27,7 +27,7 @@ Installation
  * - Call `router.notFoundHandler()` to add a callback function it no route was matched. i.e 404 handler
  * - Finally call the `router.init()` to initialize the router.
  * @example
- * import SPARouter from "sparouter"; // if you are hosting locally
+ * import SPARouter from "@kodnificent/sparouter"; // if you are hosting locally
  * const options = {
  * historyMode : true // set this to true if you use the HTML5 history mode API
  * }

@@ -41,7 +41,7 @@ Use SPARouter through these easy steps.
 ### Examples
 
 ```javascript
-import SPARouter from "sparouter"; // if you are hosting locally
+import SPARouter from "@kodnificent/sparouter"; // if you are hosting locally
 const options = {
 historyMode : true // set this to true if you use the HTML5 history mode API
 }
