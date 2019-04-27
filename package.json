@@ -2,7 +2,7 @@
   "name": "@kodnificent/sparouter",
   "version": "1.0.2",
   "description": "A light weight SPA router basically for frontend routing",
-  "main": "sparouter",
+  "main": "dist/sparouter",
   "directories": {
     "lib": "dist"
   },
