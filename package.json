@@ -20,7 +20,8 @@
     "clean:lib": "./node_modules/.bin/rimraf lib",
     "transpile": "npx babel src --out-dir lib --presets=@babel/preset-env --plugins=transform-remove-console",
     "build": "cross-env NODE_ENV=build run-p clean:dist clean:lib && run-p development production transpile",
-    "build:readme": "documentation build README.js -f md -o README.md --shallow && documentation build README.js -f html -o ./docs/README.html --shallow && documentation build ./src/sparouter.js -f md -o ./API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/API.html --shallow"
+    "build:readme": "documentation build documentation.js -f md -o README.md --shallow && documentation build documentation.js -f html -o ./docs/README.html --shallow && documentation build ./src/sparouter.js -f md -o ./API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/API.html --shallow",
+    "check-package": "echo \"This is a list of your package files that will be uploaded to the npm theregistry\" && npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
   },
   "repository": {
     "type": "git",
