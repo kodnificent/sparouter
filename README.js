@@ -13,10 +13,10 @@ SPARouter
  * Include this code just before the closing head tag of your html page  
  * 
  * **For develpment use only**  
- * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.3/dist/sparouter.js"></script>``  
+ * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.4/dist/sparouter.js"></script>``  
  * 
  * **For production use**  
- * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.3/dist/sparouter.min.js"></script>``  
+ * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.4/dist/sparouter.min.js"></script>``  
  */
 Installation
 
