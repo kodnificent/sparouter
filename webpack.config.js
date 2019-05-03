@@ -22,6 +22,13 @@ const config = {
                 }
             }
         ]
+    },
+    devServer: {
+        stats: "errors-only",
+        contentBase: "./demo",
+        publicPath: "/assets/",
+        watchContentBase: true,
+        port: 3030
     }
 }
 module.exports = (env, argv) => {
