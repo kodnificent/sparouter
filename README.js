@@ -60,6 +60,6 @@ Installation
 BasicUsage
 
 /**
- * The full API documentation can be found [here](docs/API.md).
+ * The full API documentation can be found [here](API.md).
  */
 API
