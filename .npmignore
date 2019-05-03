@@ -1,7 +1,0 @@
-node_modules
-.gitignore
-README.js
-examples
-docs
-webpack.config.js
-debug.log

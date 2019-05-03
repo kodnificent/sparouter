@@ -3,18 +3,24 @@
   "version": "1.0.3",
   "description": "A light weight SPA router basically for frontend routing",
   "main": "dist/sparouter",
-  "directories": {
-    "lib": "dist"
-  },
+  "module": "src/sparouter",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server",
     "dev": "npm run development",
     "watch": "npm run development -- --watch",
     "development": "webpack --mode development",
     "prod": "npm run production",
     "production": "webpack --mode production",
-    "plugin-ready": "npm run development -- --removeConsole && npm run production",
-    "build-readme": "documentation build README.js -f md -o README.md --shallow && documentation build README.js -f html -o ./docs/README.html --shallow && documentation build ./src/sparouter.js -f md -o ./API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/API.html --shallow"
+    "clean:dist": "./node_modules/.bin/rimraf dist",
+    "clean:lib": "./node_modules/.bin/rimraf lib",
+    "transpile": "npx babel src --out-dir lib --presets=@babel/preset-env --plugins=transform-remove-console",
+    "build": "cross-env NODE_ENV=build run-p clean:dist clean:lib && run-p development production transpile",
+    "build:readme": "documentation build README.js -f md -o README.md --shallow && documentation build README.js -f html -o ./docs/README.html --shallow && documentation build ./src/sparouter.js -f md -o ./API.md --shallow &&  documentation build ./src/sparouter.js -f html -o ./docs/API.html --shallow"
   },
   "repository": {
     "type": "git",
@@ -33,13 +39,18 @@
   },
   "homepage": "https://github.com/sirvic-tech/sparouter#readme",
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "cross-env": "^5.2.0",
     "documentation": "^10.0.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1"
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {}
 }
