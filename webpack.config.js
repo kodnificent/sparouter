@@ -31,9 +31,8 @@ module.exports = (env, argv) => {
     }
     if(argv.mode === 'production') {
         config.output.filename = '[name].min.js';
-        config.module.rules[0].use.options.plugins = ['transform-remove-console'];
     }
-    if(argv.removeConsole) {
+    if(env === 'build') {
         config.module.rules[0].use.options.plugins = ['transform-remove-console'];
     }
     return config;
