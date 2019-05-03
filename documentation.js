@@ -16,7 +16,7 @@ SPARouter
  * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.5/dist/sparouter.js"></script>``  
  * 
  * **For production use**  
- * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.4/dist/sparouter.min.js"></script>``  
+ * ``<script src="https://unpkg.com/@kodnificent/sparouter@1.0.5/dist/sparouter.min.js"></script>``  
  */
 Installation
 
