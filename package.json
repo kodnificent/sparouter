@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "description": "A light weight SPA router basically for frontend routing",
   "main": "dist/sparouter",
-  "module": "src/sparouter",
+  "module": "lib/sparouter",
   "files": [
     "dist",
     "lib"
