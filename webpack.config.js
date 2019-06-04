@@ -28,7 +28,7 @@ const config = {
         contentBase: "./demo",
         publicPath: "/assets/",
         watchContentBase: true,
-        port: 3030
+        port: 9090
     }
 }
 module.exports = (env, argv) => {

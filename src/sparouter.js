@@ -1,5 +1,6 @@
-import Utils, {
-    ArgumentNotFoundError as ArgNotFound, ArgumentTypeError as ArgTypeError
+import {
+    Utils,
+    ArgumentNotFoundError as ArgNotFound, ArgumentTypeError as ArgTypeError, QueryParams
 } from "./utils.js";
 
 class SPARouter {
@@ -32,7 +33,7 @@ class SPARouter {
             this[`_${key}`] = mergedOptions[key];
         }
         this._checkHistoryMode();
-        console.debug("SPARouter class constructed");
+        this.query = new QueryParams(null, this._historyMode);
         return this;
     }
 
@@ -222,6 +223,7 @@ class SPARouter {
 
                 let request = {};
                 request.param = this._processRequestParameters(route);
+                request.query = this.query;
                 request.uri = window.location.pathname;
 
                 return route.callback.call(route.thisArg, request, routerObj);
@@ -351,7 +353,7 @@ class SPARouter {
                     let obj = {};
                     obj[parameterName] = {
                         sn: sn,
-                        regExp: "(\\w+)",
+                        regExp: "([^\\/]+)", // catch any word except '/' forward slash
                         value: null
                     }
                     parameters.push(obj);
@@ -422,7 +424,7 @@ class SPARouter {
 
         return this;
     }
-
+    
      /**
       * The request object is passed as a callback parameter
       * @typedef {Object} request
