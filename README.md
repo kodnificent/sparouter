@@ -6,7 +6,9 @@
 -   [Installation][2]
 -   [BasicUsage][3]
     -   [Examples][4]
--   [API][5]
+-   [Query Parameters][5]
+    -   [Example][6]
+-   [API][7]
 
 ## SPARouter
 
@@ -71,10 +73,24 @@ console.log("oops! the page you are looking for is probably eaten by a snake");
 });
 router.init();
 ```
+## Query Parameters
+From version 1.1.0, you can now utilize the router.query object which stores the url search query params.  
+The router.query object can be accessed from outside the callback function or inside it.  
+
+### Example
+```javascript
+
+// let's assume the user navigated to http://mysite.com/search-page?q=book%20store&books=harry%potter,wizard%20%of%20oz
+router.get('/search-page', function(req, router){
+     router.query.get('q'); // outputs: book store
+     router.query.has('books'); // outputs: true
+     router.query.getAll('books'); // outputs: ["harry porter", "wizard of oz"]
+});
+```
 
 ## API
 
-The full API documentation can be found [here][6].
+The full API documentation can be found [here][8].
 
 [1]: #sparouter
 
@@ -84,6 +100,10 @@ The full API documentation can be found [here][6].
 
 [4]: #examples
 
-[5]: #api
+[5]: #QueryParameters
 
-[6]: API.md
+[6]: #example
+
+[7]: #api
+
+[8]: API.md
