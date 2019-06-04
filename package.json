@@ -3,10 +3,10 @@
   "version": "1.0.5",
   "description": "A light weight SPA router basically for frontend routing",
   "main": "dist/sparouter",
-  "module": "lib/sparouter",
+  "module": "src/sparouter",
   "files": [
     "dist",
-    "lib"
+    "src"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

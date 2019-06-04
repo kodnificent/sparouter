@@ -498,7 +498,8 @@ function () {
             var obj = {};
             obj[parameterName] = {
               sn: sn,
-              regExp: "(\\w+)",
+              regExp: "([^\\/]+)",
+              // catch any word except '/' forward slash
               value: null
             };
             parameters.push(obj);
