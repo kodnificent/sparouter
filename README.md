@@ -4,7 +4,7 @@
 
 -   [SPARouter][1]
 -   [Installation][2]
--   [BasicUsage][3]
+-   [Basic Usage][3]
     -   [Examples][4]
 -   [Query Parameters][5]
     -   [Example][6]
@@ -26,12 +26,12 @@ You can install SPARouter by hosting it locally or by cdn
     Include this code just before the closing head tag of your html page  
 
 **For develpment use only**  
-`<script src="https://unpkg.com/@kodnificent/sparouter@1.0.5/dist/sparouter.js"></script>`  
+`<script src="https://unpkg.com/@kodnificent/sparouter@1.1.0/dist/sparouter.js"></script>`  
 
 **For production use**  
-`<script src="https://unpkg.com/@kodnificent/sparouter@1.0.5/dist/sparouter.min.js"></script>`
+`<script src="https://unpkg.com/@kodnificent/sparouter@1.1.0/dist/sparouter.min.js"></script>`
 
-## BasicUsage
+## Basic Usage
 
 Use SPARouter through these easy steps.
 
@@ -96,11 +96,11 @@ The full API documentation can be found [here][8].
 
 [2]: #installation
 
-[3]: #basicusage
+[3]: #basic-usage
 
 [4]: #examples
 
-[5]: #QueryParameters
+[5]: #query-parameters
 
 [6]: #example
 
