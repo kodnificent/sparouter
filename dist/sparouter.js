@@ -154,7 +154,7 @@ function () {
 
     this._checkHistoryMode();
 
-    console.debug("SPARouter class constructed");
+    this.query = new _utils_js__WEBPACK_IMPORTED_MODULE_0__["QueryParams"](null, this._historyMode);
     return this;
   }
   /**
@@ -197,10 +197,10 @@ function () {
   _createClass(SPARouter, [{
     key: "get",
     value: function get(uri, callback, thisArg) {
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(uri)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("uri");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("callback");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(uri)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("uri", "string", uri);
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("callback", "function", callback);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(uri)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("uri");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("callback");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(uri)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("uri", "string", uri);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isFunction(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("callback", "function", callback);
       thisArg = thisArg instanceof SPARouter ? undefined : thisArg;
       var route = {
         uri: null,
@@ -249,10 +249,10 @@ function () {
     key: "where",
     value: function where(name, regExp) {
       //validate type
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(regExp)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("regExp");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", name);
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(regExp)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("regExp", "string", regExp);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(regExp)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("regExp");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", name);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(regExp)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("regExp", "string", regExp);
       var route = this.routes[this.routes.length - 1]; // the target route
       //if paramaters exists for this route
 
@@ -294,8 +294,8 @@ function () {
   }, {
     key: "setName",
     value: function setName(name) {
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", name);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", name);
       var targetRoute = this.routes[this.routes.length - 1];
       this.routes.forEach(function (route) {
         if (route.name === name) throw new Error("Duplicate naming. A route with name ".concat(name, " already exists"));
@@ -340,6 +340,7 @@ function () {
           found = true;
           var request = {};
           request.param = _this._processRequestParameters(route);
+          request.query = _this.query;
           request.uri = window.location.pathname;
           return route.callback.call(route.thisArg, request, routerObj);
         }
@@ -367,8 +368,8 @@ function () {
   }, {
     key: "notFoundHandler",
     value: function notFoundHandler(callback) {
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("callback");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("callback", "function", callback);
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("callback");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isFunction(callback)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("callback", "function", callback);
       this._notFoundFunction = callback;
       return this;
     }
@@ -412,9 +413,9 @@ function () {
     value: function _goTo(url) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(url)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("url");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(url)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("url", "string", url);
-      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEmpty(url)) throw new TypeError("url cannot be empty");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(url)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("url");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(url)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("url", "string", url);
+      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isEmpty(url)) throw new TypeError("url cannot be empty");
 
       if (!this._historyMode) {
         var storage = window.localStorage;
@@ -431,9 +432,9 @@ function () {
       var _this2 = this;
 
       var parameters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
-      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", string);
-      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEmpty(name)) throw new TypeError("name cannot be empty");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("name");
+      if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isString(name)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("name", "string", string);
+      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isEmpty(name)) throw new TypeError("name cannot be empty");
       var nameFound = false;
       var uri;
       this.routes.some(function (route) {
@@ -442,9 +443,9 @@ function () {
           uri = route.uri;
 
           if (_this2._containsParameter(uri)) {
-            if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSet(paramaters)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("parameters");
-            if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(parameters)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("parameters", "object", parameters);
-            if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEmpty(parameters)) throw new TypeError("parameters cannot be empty");
+            if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isSet(paramaters)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentNotFoundError"]("parameters");
+            if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isObject(parameters)) throw new _utils_js__WEBPACK_IMPORTED_MODULE_0__["ArgumentTypeError"]("parameters", "object", parameters);
+            if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["Utils"].isEmpty(parameters)) throw new TypeError("parameters cannot be empty");
             var array = [];
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
@@ -630,13 +631,17 @@ function () {
 /*!**********************!*\
   !*** ./src/utils.js ***!
   \**********************/
-/*! exports provided: ArgumentNotFoundError, ArgumentTypeError, default */
+/*! exports provided: ArgumentNotFoundError, ArgumentTypeError, Utils, QueryParams */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArgumentNotFoundError", function() { return ArgumentNotFoundError; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArgumentTypeError", function() { return ArgumentTypeError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return Utils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QueryParams", function() { return QueryParams; });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -775,9 +780,186 @@ if (Object.setPrototypeOf) {
 } else {
   ArgumentNotFoundError.__proto__ = Error;
   ArgumentTypeError.__proto__ = Error;
-}
+} // QueryParams class constants
 
-/* harmony default export */ __webpack_exports__["default"] = (Utils);
+
+var KEYS = [];
+var QUERIES = [];
+var QUERY_STRING = "";
+var HISTORY_MODE;
+
+var DECODE = function DECODE(value) {
+  return decodeURIComponent(value);
+};
+
+var DECODE_KEY = function DECODE_KEY(key) {
+  return decodeURIComponent(key.split(' ').join(''));
+};
+
+var GET_PARAM = function GET_PARAM(key) {
+  var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var param = null;
+
+  if (index) {
+    param = QUERIES[index][key];
+  } else {
+    QUERIES.some(function (query) {
+      if (query.hasOwnProperty(key)) return param = query[key];
+    });
+  }
+
+  return param;
+};
+
+var QueryParams =
+/*#__PURE__*/
+function () {
+  function QueryParams() {
+    var _this = this;
+
+    var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var historyMode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    _classCallCheck(this, QueryParams);
+
+    QUERY_STRING = url ? url : window.location.search;
+    HISTORY_MODE = window.PopStateEvent && "pushState" in window.history ? historyMode : false;
+
+    if (HISTORY_MODE) {
+      window.addEventListener("popstate", function (e) {
+        var event = e.currentTarget;
+        QUERY_STRING = event.location.search;
+        KEYS = [];
+        QUERIES = [];
+        return _this.init(); // re run this class again
+      });
+    }
+
+    ;
+    this.init();
+  }
+
+  _createClass(QueryParams, [{
+    key: "init",
+    value: function init() {
+      if (QUERY_STRING) {
+        var queryArray = QUERY_STRING.slice(1).split("&");
+        queryArray.forEach(function (query) {
+          query = query.split('=');
+          KEYS.push(DECODE_KEY(query[0]));
+          var obj = {};
+          obj[DECODE_KEY(query[0])] = query.length > 1 ? DECODE(query[1]) : true; // return true if search query has no value
+
+          QUERIES.push(obj);
+        }, this);
+      }
+    }
+  }, {
+    key: "keys",
+    value: function keys() {
+      return KEYS;
+    }
+  }, {
+    key: "has",
+    value: function has(key) {
+      key = DECODE_KEY(key);
+      return KEYS.length > 0 && GET_PARAM(key) ? true : false;
+    }
+  }, {
+    key: "get",
+    value: function get(key) {
+      key = DECODE_KEY(key);
+      return this.has(key) ? GET_PARAM(key) : null;
+    }
+  }, {
+    key: "getAll",
+    value: function getAll(key) {
+      key = DECODE_KEY(key);
+      return this.has(key) ? GET_PARAM(key).split(',') : [];
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      var string = "";
+
+      if (QUERY_STRING) {
+        string = "?";
+        KEYS.forEach(function (key, index) {
+          var value = GET_PARAM(key, index) === true ? '' : "=".concat(GET_PARAM(key, index));
+          var newString = index === 0 ? key + value : "&".concat(key + value);
+          string += newString;
+        });
+      }
+
+      return string;
+    }
+  }, {
+    key: "append",
+    value: function append(key, value) {
+      if (!Utils.isSet(key)) throw new ArgNotFound("key");
+      key = DECODE_KEY(key);
+      value = Utils.isSet(value) ? DECODE(value) : true;
+      var index = KEYS.push(key) - 1;
+      QUERIES[index] = _defineProperty({}, key, value);
+      QUERY_STRING = QUERY_STRING ? this.toString() : true;
+
+      if (HISTORY_MODE) {
+        window.history.pushState('', '', this.toString());
+      }
+
+      return GET_PARAM(key, index);
+    }
+  }, {
+    key: "set",
+    value: function set(key, value) {
+      if (!Utils.isSet(key)) throw new ArgNotFound("key");
+      key = DECODE_KEY(key);
+      value = Utils.isSet(value) ? DECODE(value) : true;
+      QUERY_STRING = QUERY_STRING ? QUERY_STRING : true;
+      var index = KEYS.indexOf(key);
+
+      if (index !== -1) {
+        KEYS[index] = key; // replace the key if it exists else append new key
+
+        QUERIES[index] = _defineProperty({}, key, value);
+      } else {
+        index = KEYS.push(key) - 1;
+        QUERIES[index] = _defineProperty({}, key, value);
+      }
+
+      QUERY_STRING = QUERY_STRING ? this.toString() : true;
+
+      if (HISTORY_MODE) {
+        window.history.pushState('', '', this.toString());
+      }
+
+      return GET_PARAM(key, index);
+    }
+  }, {
+    key: "delete",
+    value: function _delete(key) {
+      if (!Utils.isSet(key)) throw new ArgNotFound("key");
+      key = DECODE_KEY(key);
+      if (!this.has(key)) return this.has(key); // definitely returns false if key doesn't exist
+
+      var index = KEYS.indexOf(key);
+      var value = QUERIES[index][key];
+      KEYS.splice(index, 1);
+      QUERIES.splice(index, 1);
+      QUERY_STRING = QUERY_STRING ? this.toString() : true;
+
+      if (HISTORY_MODE) {
+        window.history.pushState('', '', this.toString());
+      }
+
+      return value;
+    }
+  }]);
+
+  return QueryParams;
+}();
+
+
 
 /***/ })
 
