@@ -320,7 +320,7 @@ class SPARouter {
                 uri = route.uri;
                 if(this._containsParameter(uri)){
                     
-                    if(!Utils.isSet(paramaters)) throw new ArgNotFound("parameters");
+                    if(!Utils.isSet(parameters)) throw new ArgNotFound("parameters");
                     if(!Utils.isObject(parameters)) throw new ArgTypeError("parameters", "object", parameters);
                     if(Utils.isEmpty(parameters)) throw new TypeError("parameters cannot be empty");
                     let array  = [];
